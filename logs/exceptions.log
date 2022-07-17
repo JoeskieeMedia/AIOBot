@@ -1,0 +1,24 @@
+6/20/2022 9:05 PM
+System.InvalidOperationException: No process is associated with this object.
+   at System.Diagnostics.Process.EnsureState(State state)
+   at System.Diagnostics.Process.get_HasExited()
+   at D2Bot.D2Profile.StopClient()
+   at D2Bot.D2Profile.StopThread()
+   at D2Bot.Main.HandleAction(D2Profile d2p, ProfileAction pa)
+   at D2Bot.Main.<>c__DisplayClass57_0.<WorkThread>b__0()
+
+6/22/2022 4:39 PM
+System.Net.HttpListenerException (0x80004005): The process cannot access the file because it is being used by another process
+   at System.Net.HttpListener.AddAllPrefixes()
+   at System.Net.HttpListener.Start()
+   at D2Bot.WebServer.Listen()
+
+7/16/2022 1:24 AM
+System.InvalidOperationException: No process is associated with this object.
+   at System.Diagnostics.Process.EnsureState(State state)
+   at System.Diagnostics.Process.get_HasExited()
+   at D2Bot.D2Profile.StopClient()
+   at D2Bot.D2Profile.StopThread()
+   at D2Bot.Main.HandleAction(D2Profile d2p, ProfileAction pa)
+   at D2Bot.Main.<>c__DisplayClass57_0.<WorkThread>b__0()
+

@@ -1,0 +1,44 @@
+const StarterConfig = {
+	MinGameTime: 120,
+	MaxGameTime: undefined,
+	CreateGameDelay: 5,
+	ResetCount: 30,
+	CharacterDifference: 0,
+};
+let loc = 0
+let lastLoc = 50
+let Loadedmap
+include('require.js');
+include("sdk.js");
+include("OOG.js")
+function main() {
+	require('./libs/modules/Debug')
+    require('./libs/modules/OOGGuard')
+	const files = dopen("libs/starter/modules").getFiles()
+	const starterMap = new Map();
+	
+	files.forEach(function (fullName) {
+		const name = fullName.slice(0, fullName.lastIndexOf(".js"));
+		let module = require('libs/starter/modules/' + name);
+		starterMap.set(name, module)
+		
+	});
+	
+	while(true){
+		while(!me.inGame){
+			loc = getLocation()
+			if(lastLoc !== loc){
+				location = getLocation()
+				if(starterMap.get('Starter')[location]){
+					lastLoc = starterMap.get('Starter')[location]()
+					
+				}
+			}
+			delay(200) 
+		}
+		delay(10000)  
+	}
+}
+
+
+

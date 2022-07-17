@@ -1,0 +1,13 @@
+// default.dbj gets executed upon gamejoin
+
+
+
+
+function main() {
+    delay(1000);
+    include('require.js');
+    include('sdk.js');
+    include("OOG.js");
+    print('here')
+    OnceLoaded()
+}
