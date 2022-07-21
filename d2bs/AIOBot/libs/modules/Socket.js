@@ -4,7 +4,7 @@
  */
 
 
- (function (module, require, buildinSock) {
+(function (module, require, buildinSock) {
 	const Worker = require('Worker');
 	const Events = require('Events');
 
@@ -26,13 +26,15 @@
 		};
 
 		this.recv = () => {
-			if (!this.connected || !this.socket || !this.socket.readable) return;
+			if (!this.connected || !this.socket || !this.socket.readable) {
+				return;
+			}
 
 			const data = (() => {
 				try {
-					return this.socket.read()
+					return this.socket.read();
 				} catch (e) {
-                    print(e)
+					print(e);
 					close();
 				}
 				return undefined;
@@ -42,12 +44,14 @@
 		};
 
 		this.send = (data) => {
-			if (!data || !this.socket) return;
+			if (!data || !this.socket) {
+				return;
+			}
 
 			try {
 				this.socket.send(data);
 			} catch (e) {
-                print(e)
+				print(e);
 				close();
 			}
 		};

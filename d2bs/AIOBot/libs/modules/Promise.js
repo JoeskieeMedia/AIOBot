@@ -37,14 +37,16 @@
 				typeof self._catchers !== 'undefined' && self._catchers.forEach(callback => Worker.push(function () {
 					return callback(e);
 				}));
-				if (!Array.isArray(self._catchers) || !self._catchers.length) print(e|| (new Error));
+				if (!Array.isArray(self._catchers) || !self._catchers.length) {
+					print(e || (new Error));
+				}
 				Worker.push(final);
 			};
 
 
 		if (this.__proto__.constructor !== Promise) {
 			print((new Error).stack);
-			throw new Error("Promise must be called with 'new' operator!");
+			throw new Error('Promise must be called with \'new\' operator!');
 		}
 
 		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/valueOf

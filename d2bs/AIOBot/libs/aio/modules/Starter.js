@@ -4,7 +4,7 @@
 	// Should be an module
 	include('oog.js');
 	const Control = require('../../modules/Control');
-	
+	const StarterFunc = require('./StarterFunc');
 	let lastLocation = 0;
 	let profile = {};
 	const Starter = {
@@ -57,11 +57,14 @@
 
 		4: () => {
 			// print('ÿc2 Create Game ÿc2')
-			const gameName = Starter.generateName(8);
-			const password = Starter.generateName(8);
+			const gameName = StarterFunc.generateName(8);
+			const password = StarterFunc.generateName(8);
 			Control.CreateGameName.setText(gameName);
+			delay(500);
 			Control.CreateGamePass.setText(password);
-			Starter.setDifficulty(profile.Difficulty);
+			delay(500);
+			StarterFunc.setDifficulty(profile.Difficulty);
+			delay(2000);
 			Control.CreateGame.click();
 			lastLocation = 4;
 			return lastLocation;
@@ -90,7 +93,7 @@
 
 		8: () => {
 			if (!profile.Mode) {
-				profile = Starter.readConfig();
+				profile = StarterFunc.readConfig();
 
 			}
 			// print('ÿc2 Main Menu ÿc2')    
@@ -105,10 +108,12 @@
 		9: () => {
 			if (lastLocation === 10) {
 				Control.CreateNewAccount.click();
+				delay(1000);
 			}
 			// print('ÿc2 Battle.net Login ÿc2')
 			
 			Control.LoginUsername.setText( profile.Account );
+			delay(500);
 			Control.LoginPassword.setText( profile.Password );
             
 			if (Control.Login.control) {
@@ -124,6 +129,7 @@
 
 			// print('ÿc2 Login Error ÿc2')
 			Control.LoginErrorOk.click();
+			
 			lastLocation = 10;
 			return lastLocation;
 		},
@@ -137,7 +143,7 @@
 		12: () => {
 			// print('ÿc2 Character Select ÿc2')
            
-			if (Starter.getCharacters()) {
+			if (StarterFunc.getCharacters(profile)) {
 				Control.CreateNewCharacterOk.click();
 			}
             
@@ -166,7 +172,7 @@
 		15: () => {
 			print('ÿc2 New Character Screen ÿc2');
 			if (lastLocation === 30) {
-				Starter.renameCharacter(profile);
+				StarterFunc.renameCharacter(profile);
 				// print(profile.Character)
 			}
 			if (lastLocation === 29) {
@@ -174,8 +180,8 @@
 			}
 			print('here');
 			if (!profile.Character) {
-				profile.Character = Starter.generateName(8);
-				Starter.updateConfig(profile);
+				profile.Character = StarterFunc.generateName(8);
+				StarterFunc.updateConfig(profile);
 			}
             
 			// print('here')
@@ -200,6 +206,7 @@
 		16: () => {
             
 			//// print('ÿc2 Character Select Waiting... ÿc2')
+			delay(1500);
 			lastLocation = 16;
 			return lastLocation;
 		},
@@ -270,8 +277,11 @@
 		},
 		29: () => {
 			print('ÿc2 Character Creation ÿc2');
+			if (lastLocation === 30) {
+				profile.Character = StarterFunc.generateName(8);
+			}
 			delay(50);
-			Starter.createCharacters(profile.Class);
+			StarterFunc.createCharacters(profile.Class);
 			delay(2000);
 			lastLocation = 29;
 			return lastLocation;
@@ -370,165 +380,6 @@
 			lastLocation = 44;
 			return lastLocation;
 		},
-
-		createCharacters: (charClass) => {
-
-			switch (charClass) {
-			case 'Amazon': return getControl().click(100, 280);
-			case 'Assassin': return getControl().click(200, 280);
-			case 'Barbarian': return getControl().click(400, 280);
-			case 'Druid': return getControl().click(700, 280);
-			case 'Necromancer': return getControl().click(300, 290);
-			case 'Paladin': return getControl().click(521, 270);
-			case 'Sorceress': return getControl().click(620, 270);
-			}
-		},
-
-		generateName: (length) => {
-			const letters = 'abcdefghijklmnopqrstuvwxyz';
-    
-			let name = [];
-			for (let i = 0; i < length; i++) {
-				const randomLetter = letters[Math.floor(Math.random() * letters.length)];
-				name.push(randomLetter);
-			}
-            
-			return name.join('');
-		},
-
-		setDifficulty: (difficulty) => ({
-			'normal': Control.Normal.click(),
-			'nightmare': Control.Nightmare.click(),
-			'hell': Control.Hell.click(),
-		})[difficulty],
-
-		createConfig: (config) => {
-			// print('ÿc9 createConfig ÿc9')
-			if (!config) {
-				config = Starter.defaultConfig();
-			}
-			const string = JSON.stringify(config);
-
-			FileTools.writeText('config/' + me.profile + '.json', string);
-            
-			return config;
-            
-		},
-
-		readConfig: () => {
-			// print('ÿc9 readConfig ÿc9')
-            
-			if (!Starter.configExists()) {
-				if (profile.Mode) {
-					Starter.createConfig(profile);
-					return profile;
-				}
-				Starter.createConfig(Starter.defaultConfig());
-				return Starter.defaultConfig();
-			}
-            
-			const files = FileTools.readText('config/' + me.profile + '.json');
-			const config = JSON.parse(files);
-			return config;
-            
-            
-
-		},
-		defaultConfig: () => {
-			const defaultConfig = {
-				Account: Starter.generateName(8),
-				Build: 'Meteorb',
-				Character: Starter.generateName(8),
-				Class: 'Sorceress',
-				Expansion: true,
-				Hardcode: false,
-				Ladder: true,
-				Password: Starter.generateName(8),
-				Mode: 'BattleNet',
-				Realm: 'Asia',
-    
-			};
-			return defaultConfig;
-		},
-		updateConfig: (config) => {
-			// print('ÿc9 updateConfig ÿc9')
-            
-			if (Starter.configExists()) {
-				if (profile.Mode) {
-					Starter.createConfig(profile);
-				}
-			}
-			const string = JSON.stringify(config);
-			FileTools.writeText('config/' + me.profile + '.json', string);
-		},
-
-		configExists: () => {
-			// print('ÿc9 configExists ÿc9')
-			const exists = FileTools.exists('config/' + me.profile + '.json');
-			return exists;
-		},
-
-		renameCharacter: (config) => {
-			if (!config) {
-				profile = Starter.defaultConfig();
-				return profile;
-			}
-			profile = config;
-			Starter.updateConfig(profile);
-			return profile;
-		},
-
-        
-        
-		getCharacters: () => {
-			try {
-				let lastCharacter;
-				sendKey(0x24);
-        
-				for (let i = 0; i < 9; i++) {
-					delay(50);
-					let text = getControl(4).getText();
-					// print("this is text:" + text)
-					
-					if (text.toString().toLowerCase() === profile.Character.toLowerCase()) {
-						return true;
-                        
-					}
-					if (lastCharacter === text.toString().toLowerCase()) {
-						break;
-					}
-					lastCharacter = text.toString().toLowerCase();
-					sendKey(0x28);
-                    
-				}
-				sendKey(0x24);
-				sendKey(0x27);
-				for (let i = 0; i < 9; i++) {
-                    
-					let text = getControl(4).getText();
-					
-					if (text.toString().toLowerCase() === profile.Character.toLowerCase()) {
-						// print('here')
-						return true;
-					}
-					if (lastCharacter === text.toString().toLowerCase()) {
-						break;
-					}
-					lastCharacter = text.toString().toLowerCase();
-					sendKey(0x28);
-				}
-                
-            
-			} catch (err) {
-				print(err);
-			}
-            
-        
-        
-            
-		},
-        
-
         
 	};
 

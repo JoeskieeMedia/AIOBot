@@ -6,13 +6,12 @@
 
 (function (module, require) {
 	const Pather = require('../modules/Pather');
-	const Config = require('../modules/Config');
 
 	const Misc = module.exports = {
 		// Click something
 		click: function (button, shift, x, y) {
 			if (arguments.length < 2) {
-				throw new Error("Misc.click: Needs at least 2 arguments.");
+				throw new Error('Misc.click: Needs at least 2 arguments.');
 			}
 
 			while (!me.gameReady) {
@@ -20,34 +19,34 @@
 			}
 
 			switch (arguments.length) {
-				case 2:
-					me.blockMouse = true;
-					clickMap(button, shift, me.x, me.y);
-					delay(20);
-					clickMap(button + 2, shift, me.x, me.y);
-					me.blockMouse = false;
+			case 2:
+				me.blockMouse = true;
+				clickMap(button, shift, me.x, me.y);
+				delay(20);
+				clickMap(button + 2, shift, me.x, me.y);
+				me.blockMouse = false;
 
-					break;
-				case 3:
-					if (typeof (x) !== "object") {
-						throw new Error("Misc.click: Third arg must be a Unit.");
-					}
+				break;
+			case 3:
+				if (typeof (x) !== 'object') {
+					throw new Error('Misc.click: Third arg must be a Unit.');
+				}
 
-					me.blockMouse = true;
-					clickMap(button, shift, x);
-					delay(20);
-					clickMap(button + 2, shift, x);
-					me.blockMouse = false;
+				me.blockMouse = true;
+				clickMap(button, shift, x);
+				delay(20);
+				clickMap(button + 2, shift, x);
+				me.blockMouse = false;
 
-					break;
-				case 4:
-					me.blockMouse = true;
-					clickMap(button, shift, x, y);
-					delay(20);
-					clickMap(button + 2, shift, x, y);
-					me.blockMouse = false;
+				break;
+			case 4:
+				me.blockMouse = true;
+				clickMap(button, shift, x, y);
+				delay(20);
+				clickMap(button + 2, shift, x, y);
+				me.blockMouse = false;
 
-					break;
+				break;
 			}
 
 			return true;
@@ -63,7 +62,7 @@
 				delay(100);
 			}
 
-			var player, myPartyId;
+			let player, myPartyId;
 
 			try {
 				player = getParty();
@@ -97,7 +96,7 @@
 
 		// Get number of players within getUnit distance
 		getNearbyPlayerCount: function () {
-			var count = 0,
+			let count = 0,
 				player = getUnit(0);
 
 			if (player) {
@@ -113,7 +112,7 @@
 
 		// Get total number of players in game
 		getPlayerCount: function () {
-			var count = 0,
+			let count = 0,
 				party = getParty();
 
 			if (party) {
@@ -142,7 +141,7 @@
 				return false;
 			}
 
-			var i, tick;
+			let i, tick;
 
 			for (i = 0; i < 3; i += 1) {
 				if (Pather.moveTo(unit.x + 1, unit.y + 2, 3) && getDistance(me, unit.x + 1, unit.y + 2) < 5) {
@@ -170,7 +169,7 @@
 
 		// Open all chests that have preset units in an area
 		openChestsInArea: function (area, chestIds) {
-			var i, coords, presetUnits;
+			let i, coords, presetUnits;
 
 			if (!area) {
 				area = me.area;
@@ -223,9 +222,9 @@
 		},
 
 		openChests: function (range) {
-			var unit,
+			let unit,
 				unitList = [],
-				containers = ["chest", "chest3", "armorstand", "weaponrack"];
+				containers = ['chest', 'chest3', 'armorstand', 'weaponrack'];
 
 			if (!range) {
 				range = 15;
@@ -233,15 +232,15 @@
 			const Pickit = require('../modules/Pickit');
 
 			// Testing all container code
-			if (Config.OpenChests === 2) {
-				containers = [
-					"chest", "loose rock", "hidden stash", "loose boulder", "corpseonstick", "casket", "armorstand", "weaponrack", "barrel", "holeanim", "tomb2",
-					"tomb3", "roguecorpse", "ratnest", "corpse", "goo pile", "largeurn", "urn", "chest3", "jug", "skeleton", "guardcorpse", "sarcophagus", "object2",
-					"cocoon", "basket", "stash", "hollow log", "hungskeleton", "pillar", "skullpile", "skull pile", "jar3", "jar2", "jar1", "bonechest", "woodchestl",
-					"woodchestr", "barrel wilderness", "burialchestr", "burialchestl", "explodingchest", "chestl", "chestr", "groundtomb", "icecavejar1", "icecavejar2",
-					"icecavejar3", "icecavejar4", "deadperson", "deadperson2", "evilurn", "tomb1l", "tomb3l", "groundtombl"
-				];
-			}
+			
+			containers = [
+				'chest', 'loose rock', 'hidden stash', 'loose boulder', 'corpseonstick', 'casket', 'armorstand', 'weaponrack', 'barrel', 'holeanim', 'tomb2',
+				'tomb3', 'roguecorpse', 'ratnest', 'corpse', 'goo pile', 'largeurn', 'urn', 'chest3', 'jug', 'skeleton', 'guardcorpse', 'sarcophagus', 'object2',
+				'cocoon', 'basket', 'stash', 'hollow log', 'hungskeleton', 'pillar', 'skullpile', 'skull pile', 'jar3', 'jar2', 'jar1', 'bonechest', 'woodchestl',
+				'woodchestr', 'barrel wilderness', 'burialchestr', 'burialchestl', 'explodingchest', 'chestl', 'chestr', 'groundtomb', 'icecavejar1', 'icecavejar2',
+				'icecavejar3', 'icecavejar4', 'deadperson', 'deadperson2', 'evilurn', 'tomb1l', 'tomb3l', 'groundtombl'
+			];
+			
 
 			unit = getUnit(2);
 
@@ -277,7 +276,7 @@
 				range = Pather.useTeleport() ? 25 : 15;
 			}
 
-			var i, j, shrine,
+			let i, j, shrine,
 				index = -1,
 				shrineList = [];
 			const Pickit = require('../modules/Pickit');
@@ -288,41 +287,41 @@
 
 				for (i = 0; i < Config.ScanShrines.length; i += 1) {
 					switch (Config.ScanShrines[i]) {
-						case 0: // None
-						case 1: // Refilling
-						case 2: // Health
-						case 3: // Mana
-						case 4: // Health Exchange (doesn't exist)
-						case 5: // Mana Exchange (doesn't exist)
-						case 16: // Enirhs (doesn't exist)
-						case 17: // Portal
-						case 18: // Gem
-						case 19: // Fire
-						case 20: // Monster
-						case 21: // Exploding
-						case 22: // Poison
-							this.shrineStates[i] = 0; // no state
+					case 0: // None
+					case 1: // Refilling
+					case 2: // Health
+					case 3: // Mana
+					case 4: // Health Exchange (doesn't exist)
+					case 5: // Mana Exchange (doesn't exist)
+					case 16: // Enirhs (doesn't exist)
+					case 17: // Portal
+					case 18: // Gem
+					case 19: // Fire
+					case 20: // Monster
+					case 21: // Exploding
+					case 22: // Poison
+						this.shrineStates[i] = 0; // no state
 
-							break;
-						case 6: // Armor
-						case 7: // Combat
-						case 8: // Resist Fire
-						case 9: // Resist Cold
-						case 10: // Resist Lightning
-						case 11: // Resist Poison
-						case 12: // Skill
-						case 13: // Mana recharge
-						case 14: // Stamina
-						case 15: // Experience
-							// Both states and shrines are arranged in same order with armor shrine starting at 128
-							this.shrineStates[i] = Config.ScanShrines[i] + 122;
+						break;
+					case 6: // Armor
+					case 7: // Combat
+					case 8: // Resist Fire
+					case 9: // Resist Cold
+					case 10: // Resist Lightning
+					case 11: // Resist Poison
+					case 12: // Skill
+					case 13: // Mana recharge
+					case 14: // Stamina
+					case 15: // Experience
+						// Both states and shrines are arranged in same order with armor shrine starting at 128
+						this.shrineStates[i] = Config.ScanShrines[i] + 122;
 
-							break;
+						break;
 					}
 				}
 			}
 
-			shrine = getUnit(2, "shrine");
+			shrine = getUnit(2, 'shrine');
 
 			if (shrine) {
 				// Build a list of nearby shrines
@@ -368,7 +367,7 @@
 				return false;
 			}
 
-			var i, tick;
+			let i, tick;
 
 			for (i = 0; i < 3; i += 1) {
 				if (getDistance(me, unit) < 4 || Pather.moveToUnit(unit, 3, 0)) {
@@ -392,7 +391,7 @@
 
 		// Check all shrines in area and get the first one of specified type
 		getShrinesInArea: function (area, type, use) {
-			var i, coords, shrine,
+			let i, coords, shrine,
 				shrineLocs = [],
 				shrineIds = [2, 81, 83],
 				unit = getPresetUnits(area);
@@ -412,7 +411,7 @@
 
 				Pather.moveTo(coords[0], coords[1], 2);
 
-				shrine = getUnit(2, "shrine");
+				shrine = getUnit(2, 'shrine');
 
 				if (shrine) {
 					do {
@@ -431,16 +430,16 @@
 		},
 
 		getItemDesc: function (unit) {
-			var i, desc, index,
-				stringColor = "";
+			let i, desc, index,
+				stringColor = '';
 
 			desc = unit.description;
 
 			if (!desc) {
-				return "";
+				return '';
 			}
 
-			desc = desc.split("\n");
+			desc = desc.split('\n');
 
 			// Lines are normally in reverse. Add color tags if needed and reverse order.
 			for (i = 0; i < desc.length; i += 1) {
@@ -455,68 +454,68 @@
 					}
 
 					// Find and store new color info
-					index = desc[i].lastIndexOf("ÿc");
+					index = desc[i].lastIndexOf('ÿc');
 
 					if (index > -1) {
-						stringColor = desc[i].substring(index, index + "ÿ".length + 2);
+						stringColor = desc[i].substring(index, index + 'ÿ'.length + 2);
 					}
 				}
 
-				desc[i] = desc[i].replace(/(y|ÿ)c([0-9!"+<:;.*])/g, "\\xffc$2");
+				desc[i] = desc[i].replace(/(y|ÿ)c([0-9!"+<:;.*])/g, '\\xffc$2');
 			}
 
 			if (desc[desc.length - 1]) {
-				desc[desc.length - 1] = desc[desc.length - 1].trim() + " (" + unit.ilvl + ")";
+				desc[desc.length - 1] = desc[desc.length - 1].trim() + ' (' + unit.ilvl + ')';
 			}
 
-			desc = desc.reverse().join("\n");
+			desc = desc.reverse().join('\n');
 
 			return desc;
 		},
 
 		getItemSockets: function (unit) {
-			var i, code,
+			let i, code,
 				sockets = unit.getStat(194),
 				subItems = unit.getItemsEx(),
 				tempArray = [];
 
 			if (subItems) {
 				switch (unit.sizex) {
-					case 2:
-						switch (unit.sizey) {
-							case 3: // 2 x 3
-								switch (sockets) {
-									case 4:
-										tempArray = [subItems[0], subItems[3], subItems[2], subItems[1]];
+				case 2:
+					switch (unit.sizey) {
+					case 3: // 2 x 3
+						switch (sockets) {
+						case 4:
+							tempArray = [subItems[0], subItems[3], subItems[2], subItems[1]];
 
-										break;
-									case 5:
-										tempArray = [subItems[1], subItems[4], subItems[0], subItems[3], subItems[2]];
+							break;
+						case 5:
+							tempArray = [subItems[1], subItems[4], subItems[0], subItems[3], subItems[2]];
 
-										break;
-									case 6:
-										tempArray = [subItems[0], subItems[3], subItems[1], subItems[4], subItems[2], subItems[5]];
+							break;
+						case 6:
+							tempArray = [subItems[0], subItems[3], subItems[1], subItems[4], subItems[2], subItems[5]];
 
-										break;
-								}
-
-								break;
-							case 4: // 2 x 4
-								switch (sockets) {
-									case 5:
-										tempArray = [subItems[1], subItems[4], subItems[0], subItems[3], subItems[2]];
-
-										break;
-									case 6:
-										tempArray = [subItems[0], subItems[3], subItems[1], subItems[4], subItems[2], subItems[5]];
-
-										break;
-								}
-
-								break;
+							break;
 						}
 
 						break;
+					case 4: // 2 x 4
+						switch (sockets) {
+						case 5:
+							tempArray = [subItems[1], subItems[4], subItems[0], subItems[3], subItems[2]];
+
+							break;
+						case 6:
+							tempArray = [subItems[0], subItems[3], subItems[1], subItems[4], subItems[2], subItems[5]];
+
+							break;
+						}
+
+						break;
+					}
+
+					break;
 				}
 
 				if (tempArray.length === 0 && subItems.length > 0) {
@@ -532,7 +531,7 @@
 						code += (tempArray[i].gfx + 1);
 					}
 				} else {
-					code = "gemsocket";
+					code = 'gemsocket';
 				}
 
 				tempArray[i] = code;
@@ -548,41 +547,41 @@
 				return false;
 			}
 
-			var desc,
+			let desc,
 				date = new Date(),
-				dateString = "[" + new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().slice(0, -5).replace(/-/g, '/').replace('T', ' ') + "]";
+				dateString = '[' + new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().slice(0, -5).replace(/-/g, '/').replace('T', ' ') + ']';
 
 			switch (action) {
-				case "Sold":
-					if (Config.ItemInfoQuality.indexOf(unit.quality) === -1) {
-						return false;
-					}
+			case 'Sold':
+				if (Config.ItemInfoQuality.indexOf(unit.quality) === -1) {
+					return false;
+				}
 
-					desc = this.getItemDesc(unit).split("\n").join(" | ").replace(/(\\xff|ÿ)c[0-9!"+<:;.*]/gi, "").trim();
+				desc = this.getItemDesc(unit).split('\n').join(' | ').replace(/(\\xff|ÿ)c[0-9!"+<:;.*]/gi, '').trim();
 
-					break;
-				case "Kept":
-				case "Field Kept":
-				case "Runeword Kept":
-				case "Cubing Kept":
-				case "Shopped":
-				case "Gambled":
-				case "Dropped":
-					desc = this.getItemDesc(unit).split("\n").join(" | ").replace(/(\\xff|ÿ)c[0-9!"+<:;.*]|\/|\\/gi, "").trim();
+				break;
+			case 'Kept':
+			case 'Field Kept':
+			case 'Runeword Kept':
+			case 'Cubing Kept':
+			case 'Shopped':
+			case 'Gambled':
+			case 'Dropped':
+				desc = this.getItemDesc(unit).split('\n').join(' | ').replace(/(\\xff|ÿ)c[0-9!"+<:;.*]|\/|\\/gi, '').trim();
 
-					break;
-				case "No room for":
-					desc = unit.name;
+				break;
+			case 'No room for':
+				desc = unit.name;
 
-					break;
-				default:
-					desc = unit.fname.split("\n").reverse().join(" ").replace(/(\\xff|ÿ)c[0-9!"+<:;.*]|\/|\\/gi, "").trim();
+				break;
+			default:
+				desc = unit.fname.split('\n').reverse().join(' ').replace(/(\\xff|ÿ)c[0-9!"+<:;.*]|\/|\\/gi, '').trim();
 
-					break;
+				break;
 			}
 
 			const Pickit = require('../modules/Pickit');
-			return this.fileAction("logs/ItemLog.txt", 2, dateString + " <" + me.profile + "> <" + action + "> (" + Pickit.itemQualityToName(unit.quality) + ") " + desc + (text ? " {" + text + "}" : "") + "\n");
+			return this.fileAction('logs/ItemLog.txt', 2, dateString + ' <' + me.profile + '> <' + action + '> (' + Pickit.itemQualityToName(unit.quality) + ') ' + desc + (text ? ' {' + text + '}' : '') + '\n');
 		},
 
 		// Log kept item stats in the manager.
@@ -591,33 +590,33 @@
 				return false;
 			}
 
-			var i;
+			let i;
 
-			if (!Config.LogKeys && ["pk1", "pk2", "pk3"].indexOf(unit.code) > -1) {
+			if (!Config.LogKeys && ['pk1', 'pk2', 'pk3'].indexOf(unit.code) > -1) {
 				return false;
 			}
 
-			if (!Config.LogOrgans && ["dhn", "bey", "mbr"].indexOf(unit.code) > -1) {
+			if (!Config.LogOrgans && ['dhn', 'bey', 'mbr'].indexOf(unit.code) > -1) {
 				return false;
 			}
 
-			if (!Config.LogLowRunes && ["r01", "r02", "r03", "r04", "r05", "r06", "r07", "r08", "r09", "r10", "r11", "r12", "r13", "r14"].indexOf(unit.code) > -1) {
+			if (!Config.LogLowRunes && ['r01', 'r02', 'r03', 'r04', 'r05', 'r06', 'r07', 'r08', 'r09', 'r10', 'r11', 'r12', 'r13', 'r14'].indexOf(unit.code) > -1) {
 				return false;
 			}
 
-			if (!Config.LogMiddleRunes && ["r15", "r16", "r17", "r18", "r19", "r20", "r21", "r22", "r23"].indexOf(unit.code) > -1) {
+			if (!Config.LogMiddleRunes && ['r15', 'r16', 'r17', 'r18', 'r19', 'r20', 'r21', 'r22', 'r23'].indexOf(unit.code) > -1) {
 				return false;
 			}
 
-			if (!Config.LogHighRunes && ["r24", "r25", "r26", "r27", "r28", "r29", "r30", "r31", "r32", "r33"].indexOf(unit.code) > -1) {
+			if (!Config.LogHighRunes && ['r24', 'r25', 'r26', 'r27', 'r28', 'r29', 'r30', 'r31', 'r32', 'r33'].indexOf(unit.code) > -1) {
 				return false;
 			}
 
-			if (!Config.LogLowGems && ["gcv", "gcy", "gcb", "gcg", "gcr", "gcw", "skc", "gfv", "gfy", "gfb", "gfg", "gfr", "gfw", "skf", "gsv", "gsy", "gsb", "gsg", "gsr", "gsw", "sku"].indexOf(unit.code) > -1) {
+			if (!Config.LogLowGems && ['gcv', 'gcy', 'gcb', 'gcg', 'gcr', 'gcw', 'skc', 'gfv', 'gfy', 'gfb', 'gfg', 'gfr', 'gfw', 'skf', 'gsv', 'gsy', 'gsb', 'gsg', 'gsr', 'gsw', 'sku'].indexOf(unit.code) > -1) {
 				return false;
 			}
 
-			if (!Config.LogHighGems && ["gzv", "gly", "glb", "glg", "glr", "glw", "skl", "gpv", "gpy", "gpb", "gpg", "gpr", "gpw", "skz"].indexOf(unit.code) > -1) {
+			if (!Config.LogHighGems && ['gzv', 'gly', 'glb', 'glg', 'glr', 'glw', 'skl', 'gpv', 'gpy', 'gpb', 'gpg', 'gpr', 'gpw', 'skz'].indexOf(unit.code) > -1) {
 				return false;
 			}
 
@@ -627,18 +626,18 @@
 				}
 			}
 
-			var lastArea, code, desc, sock, itemObj,
+			let lastArea, code, desc, sock, itemObj,
 				color = -1,
-				name = unit.fname.split("\n").reverse().join(" ").replace(/ÿc[0-9!"+<:;.*]|\/|\\/g, "").trim();
+				name = unit.fname.split('\n').reverse().join(' ').replace(/ÿc[0-9!"+<:;.*]|\/|\\/g, '').trim();
 
 			desc = this.getItemDesc(unit);
 			color = unit.getColor();
 
-			if (action.match("kept", "i")) {
+			if (action.match('kept', 'i')) {
 				lastArea = DataFile.getStats().lastArea;
 
 				if (lastArea) {
-					desc += ("\n\\xffc0Area: " + lastArea);
+					desc += ('\n\\xffc0Area: ' + lastArea);
 				}
 			}
 
@@ -648,25 +647,25 @@
 			if (sock) {
 				do {
 					if (sock.itemType === 58) {
-						desc += "\n\n";
+						desc += '\n\n';
 						desc += this.getItemDesc(sock);
 					}
 				} while (sock.getNext());
 			}
 
 			if (keptLine) {
-				desc += ("\n\\xffc0Line: " + keptLine);
+				desc += ('\n\\xffc0Line: ' + keptLine);
 			}
 
-			desc += "$" + (unit.getFlag(0x400000) ? ":eth" : "");
+			desc += '$' + (unit.getFlag(0x400000) ? ':eth' : '');
 
 			itemObj = {
-				title: action + " " + name,
+				title: action + ' ' + name,
 				description: desc,
 				image: code,
 				textColor: unit.quality,
 				itemColor: color,
-				header: "",
+				header: '',
 				sockets: this.getItemSockets(unit)
 			};
 
@@ -678,36 +677,36 @@
 		// skip low items: MuleLogger
 		skipItem: function (id) {
 			switch (id) {
-				//case 549: // horadric cube
-				case   0: // hand axe
-				case  10: // wand
-				case  14: // club
-				case  25: // shortsword
-				case  47: // javelin
-				case  63: // shortstaff
-				case 175: // katar
-				case 328: // buckler
-				case 513: // stamina potion
-				case 514: // antidote potion
-				case 515: // rejuvenationpotion
-				case 516: // fullrejuvenationpotion
-				case 517: // thawing potion
-				case 518: // tomeoftownportal
-				case 519: // tomeofidentify
-				case 529: // scrolloftownportal
-				case 530: // scrollofidentify
-				case 543: // key
-				case 587: // minorhealingpotion
-				case 588: // lighthealingpotion
-				case 589: // healingpotion
-				case 590: // greathealingpotion
-				case 591: // superhealingpotion
-				case 592: // minormanapotion
-				case 593: // lightmanapotion
-				case 594: // manapotion
-				case 595: // greatermanapotion
-				case 596: // supermanapotion
-					return true;
+			//case 549: // horadric cube
+			case 0: // hand axe
+			case 10: // wand
+			case 14: // club
+			case 25: // shortsword
+			case 47: // javelin
+			case 63: // shortstaff
+			case 175: // katar
+			case 328: // buckler
+			case 513: // stamina potion
+			case 514: // antidote potion
+			case 515: // rejuvenationpotion
+			case 516: // fullrejuvenationpotion
+			case 517: // thawing potion
+			case 518: // tomeoftownportal
+			case 519: // tomeofidentify
+			case 529: // scrolloftownportal
+			case 530: // scrollofidentify
+			case 543: // key
+			case 587: // minorhealingpotion
+			case 588: // lighthealingpotion
+			case 589: // healingpotion
+			case 590: // greathealingpotion
+			case 591: // superhealingpotion
+			case 592: // minormanapotion
+			case 593: // lightmanapotion
+			case 594: // manapotion
+			case 595: // greatermanapotion
+			case 596: // supermanapotion
+				return true;
 			}
 
 			return false;
@@ -715,25 +714,25 @@
 
 		// Change into werewolf or werebear
 		shapeShift: function (mode) {
-			var i, tick, skill, state;
+			let i, tick, skill, state;
 
 			switch (mode.toString().toLowerCase()) {
-				case "0":
-					return false;
-				case "1":
-				case "werewolf":
-					state = 139;
-					skill = 223;
+			case '0':
+				return false;
+			case '1':
+			case 'werewolf':
+				state = 139;
+				skill = 223;
 
-					break;
-				case "2":
-				case "werebear":
-					state = 140;
-					skill = 228;
+				break;
+			case '2':
+			case 'werebear':
+				state = 140;
+				skill = 228;
 
-					break;
-				default:
-					throw new Error("shapeShift: Invalid parameter");
+				break;
+			default:
+				throw new Error('shapeShift: Invalid parameter');
 			}
 
 			if (me.getState(state)) {
@@ -761,7 +760,7 @@
 
 		// Change back to human shape
 		unShift: function () {
-			var i, tick;
+			let i, tick;
 
 			if (me.getState(139) || me.getState(140)) {
 				for (i = 0; i < 3; i += 1) {
@@ -788,7 +787,7 @@
 
 		// Go to town when low on hp/mp or when out of potions. can be upgraded to check for curses etc.
 		townCheck: function () {
-			var i, potion, check,
+			let i, potion, check,
 				needhp = true,
 				needmp = true;
 
@@ -796,18 +795,18 @@
 			if (me.area === 136 || me.dead) {
 				return false;
 			}
-			const Town = require('../modules/Town');
+			const Town = require('../aio/TESTING/Town');
 
 			if (Config.TownCheck && !me.inTown) {
 				try {
 					if (me.gold > 1000) {
 						for (i = 0; i < 4; i += 1) {
-							if (Config.BeltColumn[i] === "hp" && Config.MinColumn[i] > 0) {
+							if (Config.BeltColumn[i] === 'hp' && Config.MinColumn[i] > 0) {
 								potion = me.getItem(-1, 2); // belt item
 
 								if (potion) {
 									do {
-										if (potion.code.indexOf("hp") > -1) {
+										if (potion.code.indexOf('hp') > -1) {
 											needhp = false;
 
 											break;
@@ -816,18 +815,18 @@
 								}
 
 								if (needhp) {
-									print("We need healing potions");
+									print('We need healing potions');
 
 									check = true;
 								}
 							}
 
-							if (Config.BeltColumn[i] === "mp" && Config.MinColumn[i] > 0) {
+							if (Config.BeltColumn[i] === 'mp' && Config.MinColumn[i] > 0) {
 								potion = me.getItem(-1, 2); // belt item
 
 								if (potion) {
 									do {
-										if (potion.code.indexOf("mp") > -1) {
+										if (potion.code.indexOf('mp') > -1) {
 											needmp = false;
 
 											break;
@@ -836,7 +835,7 @@
 								}
 
 								if (needmp) {
-									print("We need mana potions");
+									print('We need mana potions');
 
 									check = true;
 								}
@@ -853,7 +852,7 @@
 			}
 
 			if (check) {
-				scriptBroadcast("townCheck");
+				scriptBroadcast('townCheck');
 				delay(500);
 
 				return true;
@@ -864,16 +863,16 @@
 
 		// Log someone's gear
 		spy: function (name) {
-			if (!isIncluded("oog.js")) {
-				include("oog.js");
+			if (!isIncluded('oog.js')) {
+				include('oog.js');
 			}
 
 
-			var item,
+			let item,
 				unit = getUnit(-1, name);
 
 			if (!unit) {
-				print("player not found");
+				print('player not found');
 
 				return false;
 			}
@@ -925,32 +924,32 @@
 		},*/
 
 		fileAction: function (path, mode, msg) {
-			var i,
-				contents = "";
+			let i,
+				contents = '';
 
 			MainLoop:
-				for (i = 0; i < 30; i += 1) {
-					try {
-						switch (mode) {
-							case 0: // read
-								contents = FileTools.readText(path);
+			for (i = 0; i < 30; i += 1) {
+				try {
+					switch (mode) {
+					case 0: // read
+						contents = FileTools.readText(path);
 
-								break MainLoop;
-							case 1: // write
-								FileTools.writeText(path, msg);
+						break MainLoop;
+					case 1: // write
+						FileTools.writeText(path, msg);
 
-								break MainLoop;
-							case 2: // append
-								FileTools.appendText(path, msg);
+						break MainLoop;
+					case 2: // append
+						FileTools.appendText(path, msg);
 
-								break MainLoop;
-						}
-					} catch (e) {
-
+						break MainLoop;
 					}
+				} catch (e) {
 
-					delay(100);
 				}
+
+				delay(100);
+			}
 
 			return mode === 0 ? contents : true;
 		},
@@ -972,7 +971,7 @@
 				}
 
 				if (getTickCount() - tick < 5000) { // only try for 5000 seconds times
-					Worker.push(() => retry(amount++))
+					Worker.push(() => retry(amount++));
 				}
 			};
 			retry(0);
@@ -986,38 +985,38 @@
 
 		// Report script errors to logs/ScriptErrorLog.txt
 		errorReport: function (error, script) {
-			var i, date, dateString, msg, oogmsg, filemsg, source, stack,
-				stackLog = "";
+			let i, date, dateString, msg, oogmsg, filemsg, source, stack,
+				stackLog = '';
 
 			date = new Date();
-			dateString = "[" + new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().slice(0, -5).replace(/-/g, '/').replace('T', ' ') + "]";
+			dateString = '[' + new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().slice(0, -5).replace(/-/g, '/').replace('T', ' ') + ']';
 
-			if (typeof error === "string") {
+			if (typeof error === 'string') {
 				msg = error;
-				oogmsg = error.replace(/ÿc[0-9!"+<:;.*]/gi, "");
-				filemsg = dateString + " <" + me.profile + "> " + error.replace(/ÿc[0-9!"+<:;.*]/gi, "") + "\n";
+				oogmsg = error.replace(/ÿc[0-9!"+<:;.*]/gi, '');
+				filemsg = dateString + ' <' + me.profile + '> ' + error.replace(/ÿc[0-9!"+<:;.*]/gi, '') + '\n';
 			} else {
-				source = error.fileName.substring(error.fileName.lastIndexOf("\\") + 1, error.fileName.length);
-				msg = "ÿc1Error in ÿc0" + script + " ÿc1(" + source + " line ÿc1" + error.lineNumber + "): ÿc1" + error.message;
-				oogmsg = " Error in " + script + " (" + source + " #" + error.lineNumber + ") " + error.message + " (Area: " + me.area + ", Ping:" + me.ping + ", Game: " + me.gamename + ")";
-				filemsg = dateString + " <" + me.profile + "> " + msg.replace(/ÿc[0-9!"+<:;.*]/gi, "") + "\n";
+				source = error.fileName.substring(error.fileName.lastIndexOf('\\') + 1, error.fileName.length);
+				msg = 'ÿc1Error in ÿc0' + script + ' ÿc1(' + source + ' line ÿc1' + error.lineNumber + '): ÿc1' + error.message;
+				oogmsg = ' Error in ' + script + ' (' + source + ' #' + error.lineNumber + ') ' + error.message + ' (Area: ' + me.area + ', Ping:' + me.ping + ', Game: ' + me.gamename + ')';
+				filemsg = dateString + ' <' + me.profile + '> ' + msg.replace(/ÿc[0-9!"+<:;.*]/gi, '') + '\n';
 
-				if (error.hasOwnProperty("stack")) {
+				if (error.hasOwnProperty('stack')) {
 					stack = error.stack;
 
 					if (stack) {
-						stack = stack.split("\n");
+						stack = stack.split('\n');
 
-						if (stack && typeof stack === "object") {
+						if (stack && typeof stack === 'object') {
 							stack.reverse();
 						}
 
 						for (i = 0; i < stack.length; i += 1) {
 							if (stack[i]) {
-								stackLog += stack[i].substr(0, stack[i].indexOf("@") + 1) + stack[i].substr(stack[i].lastIndexOf("\\") + 1, stack[i].length - 1);
+								stackLog += stack[i].substr(0, stack[i].indexOf('@') + 1) + stack[i].substr(stack[i].lastIndexOf('\\') + 1, stack[i].length - 1);
 
 								if (i < stack.length - 1) {
-									stackLog += ", ";
+									stackLog += ', ';
 								}
 							}
 						}
@@ -1025,7 +1024,7 @@
 				}
 
 				if (stackLog) {
-					filemsg += "Stack: " + stackLog + "\n";
+					filemsg += 'Stack: ' + stackLog + '\n';
 				}
 			}
 
@@ -1035,7 +1034,7 @@
 
 			showConsole();
 			print(msg);
-			this.fileAction("logs/ScriptErrorLog.txt", 2, filemsg);
+			this.fileAction('logs/ScriptErrorLog.txt', 2, filemsg);
 
 			if (this.screenshotErrors) {
 				takeScreenshot();
@@ -1048,7 +1047,7 @@
 				return;
 			}
 
-			debugLog(me.profile + ": " + msg);
+			debugLog(me.profile + ': ' + msg);
 		},
 
 		// Use a NPC menu. Experimental function, subject to change
@@ -1056,21 +1055,21 @@
 		useMenu: function (id) {
 			//print("useMenu " + getLocaleString(id));
 
-			var i, npc, lines;
+			let i, npc, lines;
 
 			switch (id) {
-				case 0x1507: // Resurrect (non-English dialog)
-				case 0x0D44: // Trade (crash dialog)
-					npc = getInteractedNPC();
+			case 0x1507: // Resurrect (non-English dialog)
+			case 0x0D44: // Trade (crash dialog)
+				npc = getInteractedNPC();
 
-					if (npc) {
-						npc.useMenu(id);
-						delay(750);
+				if (npc) {
+					npc.useMenu(id);
+					delay(750);
 
-						return true;
-					}
+					return true;
+				}
 
-					break;
+				break;
 			}
 
 			lines = getDialogLines();
@@ -1092,10 +1091,10 @@
 		},
 
 		clone: function (obj) {
-			var i, copy, attr;
+			let i, copy, attr;
 
 			// Handle the 3 simple types, and null or undefined
-			if (null === obj || "object" !== typeof obj) {
+			if (null === obj || 'object' !== typeof obj) {
 				return obj;
 			}
 
@@ -1132,11 +1131,11 @@
 				return copy;
 			}
 
-			throw new Error("Unable to copy obj! Its type isn't supported.");
+			throw new Error('Unable to copy obj! Its type isn\'t supported.');
 		},
 
 		copy: function (from) {
-			var i,
+			let i,
 				obj = {};
 
 			for (i in from) {
@@ -1152,8 +1151,9 @@
 			let ret, start = getTickCount();
 
 			while (getTickCount() - start <= timeout) {
-				if ((ret = check()))
+				if ((ret = check())) {
 					return ret;
+				}
 
 				delay(sleep);
 			}

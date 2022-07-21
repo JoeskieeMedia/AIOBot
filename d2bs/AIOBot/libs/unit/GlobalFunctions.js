@@ -66,7 +66,7 @@ const clickItemAndWait = (...args) => {
 
 		return console;
 
-	})();
+	})()
 
 })([].filter.constructor('return this')(), print);
 
@@ -116,9 +116,7 @@ const clickItemAndWait = (...args) => {
 			cb = [].filter.constructor(cb);
 		}
 
-		if (typeof cb !== 'function') {
-			throw new TypeError('setTimeout callback needs to be a function');
-		}
+		if (typeof cb !== 'function') throw new TypeError('setTimeout callback needs to be a function');
 
 		return new Timer(cb, time, args);
 	};
@@ -130,7 +128,7 @@ const clickItemAndWait = (...args) => {
 	global['clearTimeout'] = function (timer) {
 		const index = Timer.instances.indexOf(timer);
 		if (index > -1) {
-			Timer.instances.splice(index, 1);
+			Timer.instances.splice(index, 1)
 		}
 	};
 
@@ -163,7 +161,7 @@ const clickItemAndWait = (...args) => {
 			D2Bot.printToConsole(ret.toSource());
 
 
-			console.debug('test: ', getUnit(first, -1, -1, ret.gid));
+			console.debug('test: ' , getUnit(first, -1, -1, ret.gid));
 
 
 			console.debug(ret.toSource());
@@ -178,6 +176,6 @@ const clickItemAndWait = (...args) => {
 		}
 
 		return original.apply(this, args);
-	};
+	}
 })([].filter.constructor('return this')(), getUnit);
 

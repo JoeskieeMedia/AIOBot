@@ -4,7 +4,7 @@
  */
 
 
- (function (module, require) {
+(function (module, require) {
 	const myEvents = new (require('../modules/Events'));
 	const Worker = require('../modules/Worker');
 
@@ -14,18 +14,20 @@
 		addEventListener('scriptmsg', data => workBench.push(data));
 
 		this.update = function () {
-			if (!workBench.length) return true;
+			if (!workBench.length) {
+				return true;
+			}
 
 			let work = workBench.splice(0, workBench.length);
 			work.filter(data => typeof data === 'object' && data)
 				.forEach(function (data) {
 					Object.keys(data).forEach(function (item) {
 						myEvents.emit(item, data[item]); // Trigger those events
-					})
+					});
 				});
 
 			return true; // always, to keep looping;
-		}
+		};
 	}).update;
 
 	module.exports = {
@@ -41,6 +43,6 @@
 				print(e.stack);
 			}
 		}
-	}
+	};
 
 })(module, require);

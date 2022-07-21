@@ -13,3 +13,5 @@ d2bs/aiobot/config/*
 package.json
 node_modules
 yarn.lock
+.editorconfig
+

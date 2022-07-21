@@ -4,8 +4,10 @@
 
 	switch (thread) {
 	case 'thread': {
-		Worker.runInBackground.stackTrace = (new function () {
-			if (me.ingame) return;
+		Worker.runInBackground.OOGstackTrace = (new function () {
+			if (me.ingame) {
+				return;
+			}
 			
 			let self = this;
 			let stack;
@@ -36,7 +38,9 @@
 			}
 
 			this.update = () => {
-				if (me.ingame) return true;
+				if (me.ingame) {
+					return true;
+				}
 				stack = myStack.match(/[^\r\n]+/g);
 				stack = stack && stack.slice(5/*skip path to here*/).map(el => {
 					let line = el.substr(el.lastIndexOf(':') + 1);
@@ -54,14 +58,18 @@
 		let quiting = false;
 		addEventListener('scriptmsg', data => data === 'quit' && (quiting = true));
 
-		while (!quiting) delay(1000);
+		while (!quiting) {
+			delay(1000);
+		}
 		break;
 	}
 	case 'started': {
 		let sendStack = getTickCount();
 		Worker.push(function highPrio() {
 			Worker.push(highPrio);
-			if ((getTickCount() - sendStack) < 200 || (sendStack = getTickCount()) && false) return true;
+			if ((getTickCount() - sendStack) < 200 || (sendStack = getTickCount()) && false) {
+				return true;
+			}
 			Messaging.send({OOGGuard: {stack: (new Error).stack}});
 			return true;
 		});

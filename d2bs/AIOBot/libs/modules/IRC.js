@@ -23,16 +23,18 @@
 	};
 	module.exports = function (config) {
 		Object.keys(defaultSettings).filter(key => !config.hasOwnProperty(key)).forEach(key => config[key] = defaultSettings[key]);
-		Object.keys(config).forEach(key=>this[key]=config[key]);
+		Object.keys(config).forEach(key => this[key] = config[key]);
 
-		if (!config.server) throw new Error('Need a server to connect to');
+		if (!config.server) {
+			throw new Error('Need a server to connect to');
+		}
 
 		const Events = require('../modules/Events');
 		const myEvents = new Events();
-		Object.keys(myEvents).forEach(key=>this[key]=myEvents[key]);
+		Object.keys(myEvents).forEach(key => this[key] = myEvents[key]);
 
 		/** @type Socket*/
-		const socket = new (require('../modules/Socket'))(config.server,config.port);
+		const socket = new (require('../modules/Socket'))(config.server, config.port);
 
 		// Override the socket's send function, so it always ends with and crlf
 		(orgSend => socket.send = data => data !== undefined && orgSend.call(orgSend, data.toString() + String.fromCharCode(13, 10)))(socket.send);
@@ -41,8 +43,8 @@
 		(orgSocket => socket.connect = () => {
 			try {
 				orgSocket.apply(socket);
-				socket.send('NICK '+this.nick);
-				socket.send('USER '+this.user+' :A Diablo 2 Bot');
+				socket.send('NICK ' + this.nick);
+				socket.send('USER ' + this.user + ' :A Diablo 2 Bot');
 				print('Connected to ' + hostname);
 			} catch (e) {
 				// Dont care for a failed connection
@@ -54,24 +56,24 @@
 
 		socket.on('data', function (data) {
 			data.split(String.fromCharCode(13, 10)).forEach(function(line) {
-				this.emit(null,line);
+				this.emit(null, line);
 				const splitter = line.split(' ');
 				const key = line.startsWith(':') ? splitter.length > 1 && splitter[1] : splitter.first();
 
-				switch(key) {
-					case 'PING':
-						socket.send(line.substr(line.indexOf(key)).replace('PING','PONG')); // reply on a PING msg
-						break;
-					case '001':
-						socket.send('JOIN '+this.channel);
-						break;
-					case 'PRIVMSG':
-						this.emit('msg',line);
-						break;
+				switch (key) {
+				case 'PING':
+					socket.send(line.substr(line.indexOf(key)).replace('PING', 'PONG')); // reply on a PING msg
+					break;
+				case '001':
+					socket.send('JOIN ' + this.channel);
+					break;
+				case 'PRIVMSG':
+					this.emit('msg', line);
+					break;
 				}
 			});
 		});
 
 		this.send = socket.send;
-	}
+	};
 }).call(null, module, require);

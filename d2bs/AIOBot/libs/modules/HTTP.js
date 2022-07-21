@@ -9,7 +9,7 @@
 	const Promise = require('Promise');
 
 	
-    const defaultOptions = {
+	const defaultOptions = {
 		url: '',
 		headers: {
 			'user-agent': 'd2bs',
@@ -23,7 +23,7 @@
 	const HTTP = function (config = {}) {
 		config = Object.assign(defaultOptions, config);
 		if (!config.url) {
-			throw new Error('Must give a url to connect to')
+			throw new Error('Must give a url to connect to');
 		}
 		const [fullUrl, protocol, hostname, uri] = config.url.match(/^(.*:)\/\/([A-Za-z0-9\-\.]+)?(.*)/);
 		const socket = new Socket(hostname, config.port);

@@ -105,7 +105,7 @@ module.exports = {
 	},
 	'rules': {
 		// enable additional rules
-		'indent': ['warn', 'tab'],
+		'indent': ['error', 'tab'],
 		'linebreak-style': ['error', 'windows'],
 		'semi': ['error', 'always'],
 		'comma-spacing': ['error', {'before': false, 'after': true}],

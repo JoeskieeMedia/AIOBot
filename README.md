@@ -10,14 +10,13 @@ This uses D2BS just like kolbot does.
 
 ### [D2BS](https://github.com/noah-/d2bs)
 
-### <span style="color:green">Cgreenits for Jaenster project:<span>
+### <span style="color:green">Credits for Jaensters project:<span>
 
 This project would not have been possible without the work of Jaenster and the other contributors of this project:
 
 ### [Jaensters Project](https://github.com/jaenster/jaenster-kolbot)
 
-
-
+Theres also a lot of things were added to the sdk.js && Controls by theGuy 
 
 # <span style="color:green">ToDo:<span>
 
@@ -33,6 +32,7 @@ This project would not have been possible without the work of Jaenster and the o
     Ubers
     Muling
     Dropper
+	Maybe autoshop?
     These will not be done an any specific order
 
 
@@ -44,4 +44,4 @@ This project would not have been possible without the work of Jaenster and the o
 # <span style="color:green">Have Questions?<span>
 
 
-<span style="color:orange">Join my discord server!!!<span> [Discord](https://discord.gg/U4tyw7Sqan)
+<span style="color:orange">Join my [Discord](https://discord.gg/U4tyw7Sqan) server!!!<span> 

@@ -11,7 +11,7 @@
 	globalThis['OnceLoaded'] = function () {
 
 		// Load game modes
-		const fileList = dopen("libs/GameModes").getFiles();
+		const fileList = dopen('libs/GameModes').getFiles();
 		console.debug(fileList);
 
 		Array.isArray(fileList) && fileList
@@ -20,7 +20,7 @@
 			.forEach(x => require('../gamemodes/' + x));
 
 
-		GameMode.instances.sort((a,b)=> a.prio-b.prio);
+		GameMode.instances.sort((a, b) => a.prio - b.prio);
 
 		// wait until game is ready
 		while (!me.gameReady) {

@@ -47,7 +47,7 @@
 
 				return null;
 			}
-		})
+		});
 
 	}
 
@@ -128,8 +128,8 @@
 	Control.CharCreateHardcore = new Control(6, 319, 560, 15, 16);
 	Control.CharCreateHCWarningOk = new Control(6, 421, 337, 96, 32);
 	Control.CharCreateHCWarningCancel = new Control(6, 281, 337, 96, 32);
-    Control.CreateNewCharacterOk = new Control(6, 627, 572, 128, 35);
-    Control.CharSelectTest = new Control(4, 85, 78, 446, 42)
+	Control.CreateNewCharacterOk = new Control(6, 627, 572, 128, 35);
+	Control.CharSelectTest = new Control(4, 85, 78, 446, 42);
     
 
 	Control.SinglePlayerNormal = new Control(-1, 264, 297, 272, 35);

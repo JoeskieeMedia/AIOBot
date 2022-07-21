@@ -14,12 +14,13 @@ include("OOG.js")
 function main() {
 	require('./libs/modules/Debug')
     require('./libs/modules/OOGGuard')
-	const files = dopen("libs/starter/modules").getFiles()
+	const files = dopen("libs/aio/modules").getFiles()
 	const starterMap = new Map();
-	
+	D2Bot.init();
+
 	files.forEach(function (fullName) {
 		const name = fullName.slice(0, fullName.lastIndexOf(".js"));
-		let module = require('libs/starter/modules/' + name);
+		let module = require('libs/aio/modules/' + name);
 		starterMap.set(name, module)
 		
 	});

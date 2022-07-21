@@ -7,7 +7,7 @@ function main() {
     delay(1000);
     include('require.js');
     include('sdk.js');
-    include("OOG.js");
-    print('here')
-    OnceLoaded()
+    include('oog.js');
+	D2Bot.init();
+    OnceLoaded();
 }

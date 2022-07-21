@@ -18,5 +18,5 @@
 		on: myEvents.on,
 		off: myEvents.off,
 		once: myEvents.once,
-	}
+	};
 }).call(null, typeof module === 'object' && module || {}, typeof require === 'undefined' && (include('require.js') && require) || require);
