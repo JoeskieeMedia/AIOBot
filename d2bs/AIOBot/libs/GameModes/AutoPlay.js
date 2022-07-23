@@ -8,6 +8,7 @@
 		name: 'Auto Play',
 		prio: 1,
 		handler: () => {
+			require('../modules/Clear');
 			
 			
 			const questMap = new Map();

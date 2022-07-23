@@ -41,7 +41,7 @@
 		},
 
 		// Open chests while pathing
-		popChests: function () {
+		/* popChests: function () {
 			
 			require('../modules/Misc').openChests(20);
 			
@@ -52,12 +52,12 @@
 			
 			require('../modules/Misc').scanShrines();
 			
-		}
+		} */
 	};
 
 	let PathDebug = {
 		hooks: [],
-		enableHooks: false,
+		enableHooks: true,
 
 		drawPath: function (path) {
 			if (!this.enableHooks) {
@@ -217,7 +217,7 @@
 								this.recursion = true;
 							}
 
-							Misc.townCheck();
+							
 						}
 					} else {
 						if (fail > 0 && !useTeleport && !me.inTown) {

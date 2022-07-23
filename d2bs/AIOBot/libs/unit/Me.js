@@ -2,12 +2,15 @@
 
 (function () {
 	const Events = new (require('../modules/Events'));
+	const Clear = require('../modules/Clear');
 	me.switchWeapons = function (slot) {
 		if (this.gametype === 0 || this.weaponswitch === slot && slot !== undefined) {
 			return true;
 		}
 
-		while (typeof me !== 'object') delay(10);
+		while (typeof me !== 'object') {
+			delay(10);
+		}
 
 		let originalSlot = this.weaponswitch;
 
@@ -48,9 +51,13 @@
 		// Put a skill on desired slot
 		me.setSkill = function (skillId, hand, item) {
 			// Check if the skill is already set
-			if (me.getSkill(hand === 0 && 2 || 3) === skillId) return true;
+			if (me.getSkill(hand === 0 && 2 || 3) === skillId) {
+				return true;
+			}
 
-			if (!item && !me.getSkill(skillId, 1)) return false;
+			if (!item && !me.getSkill(skillId, 1)) {
+				return false;
+			}
 
 			// Charged skills must be cast from right hand
 			if (hand === undefined || hand === 3 || item) {
@@ -59,7 +66,7 @@
 			}
 
 			return !!original.apply(me, [skillId, hand, item]);
-		}
+		};
 	})(me.setSkill);
 
 	Object.defineProperties(me, {
@@ -82,8 +89,8 @@
 		},
 		staminaDPS: { // stamina drain per second
 			get: function () {
-				var bonusReduction = me.getStat(28);
-				var armorMalusReduction = 0; // TODO:
+				let bonusReduction = me.getStat(28);
+				let armorMalusReduction = 0; // TODO:
 				return 25 * Math.max(40 * (1 + armorMalusReduction / 10) * (100 - bonusReduction) / 100, 1) / 256;
 			}
 		},
@@ -114,7 +121,7 @@
 		},
 		highestQuestDone: {
 			get: function () {
-				for (var i = sdk.quests.SecretCowLevel; i >= sdk.quests.SpokeToWarriv; i--) {
+				for (let i = sdk.quests.SecretCowLevel; i >= sdk.quests.SpokeToWarriv; i--) {
 					if (me.getQuest(i, 0)) {
 						return i;
 					}
@@ -122,11 +129,14 @@
 				return undefined;
 			}
 		}
-	});
 
+	});
+	
 	me.journeyToPreset = function (area, unitType, unitId, offX, offY, clearPath, pop) {
 		const Pather = require('../modules/Pather');
-		if (me.area !== area) Pather.journeyTo(area);
+		if (me.area !== area) {
+			Pather.journeyTo(area);
+		}
 
 		return Pather.moveToPreset(area, unitType, unitId, offX, offY, clearPath, pop);
 	};
@@ -135,31 +145,54 @@
 		Pather.useWaypoint(targetArea);
 		return this;
 	};
-
+	
 	me.emptyCube = function () {
 		const Storage = require('../modules/Storage');
 		const cube = me.cube,
 			items = me.getItemsEx().filter(item => item.location === sdk.storage.Cube);
 
-		if (!cube) return false;
+		if (!cube) {
+			return false;
+		}
 
-		if (!items.length) return true;
+		if (!items.length) {
+			return true;
+		}
 
 		return !items.some(item => !(Storage.Stash.MoveTo(item) && Storage.Inventory.MoveTo(item)));
 	};
-
+	me.hpRegen = function () {
+		const repLife = me.getStat(74);
+		const formula = (25 * repLife) / 256;
+		return formula;
+	};
+	me.mpRegen = function () {
+		const MaxMana = me.getStat(9);
+		const BaseRegenRateBonus = (me.getStat(27) + me.getStat(26));
+		const formula = (25 * Math.floor(Math.floor(256 * MaxMana / 3000) * (100 + BaseRegenRateBonus) / 100) / 256);
+		return formula;
+	};
+	me.clear = function () {
+		return Clear.exec();
+	};
 	me.openCube = function () {
 		console.debug('Opening cube?');
 		let i, tick,
 			cube = me.cube;
 
-		if (!cube) return false;
+		if (!cube) {
+			return false;
+		}
 
-		if (getUIFlag(0x1a)) return true;
+		if (getUIFlag(0x1a)) {
+			return true;
+		}
 
 		if (cube.location === 7) {
 			const Town = require('../modules/Town');
-			if (cube.location === 7 && !Town.openStash()) return false;
+			if (cube.location === 7 && !Town.openStash()) {
+				return false;
+			}
 		}
 
 		for (i = 0; i < 3; i += 1) {
@@ -183,7 +216,9 @@
 	me.closeCube = function () {
 		let i, tick;
 
-		if (!getUIFlag(0x1a)) return true;
+		if (!getUIFlag(0x1a)) {
+			return true;
+		}
 
 		for (i = 0; i < 5; i++) {
 			me.cancel();
@@ -219,7 +254,7 @@
 			quality = -1;
 		}
 
-		var item = me.getItem(id, mode);
+		let item = me.getItem(id, mode);
 
 		if (item) {
 			do {
@@ -245,7 +280,7 @@
 			loc = false;
 		}
 
-		var list = [],
+		let list = [],
 			item = me.getItem(id, mode);
 
 		if (!item) {
@@ -272,7 +307,7 @@
 			Town = require('../modules/Town'),
 			Misc = require('../modules/Misc');
 
-		var i, chest, item,
+		let i, chest, item,
 			tick = getTickCount();
 
 		if (me.findItem(classid)) { // Don't open "chest" or try picking up item if we already have it.
@@ -306,10 +341,10 @@
 					delay(me.ping * 2 + 500);
 				} else {
 					if (Pickit.canMakeRoom()) {
-						console.debug("ÿc1Trying to make room for " + Pickit.itemColor(item) + item.name);
+						console.debug('ÿc1Trying to make room for ' + Pickit.itemColor(item) + item.name);
 						Town.visitTown(); // Go to Town and do chores. Will throw an error if it fails to return from Town.
 					} else {
-						console.debug("ÿc1Not enough room for " + Pickit.itemColor(item) + item.name);
+						console.debug('ÿc1Not enough room for ' + Pickit.itemColor(item) + item.name);
 						return false;
 					}
 				}
@@ -329,9 +364,9 @@
 			Pather = require('../modules/Pather');
 
 
-		for (var i = 0; i < 5; i++) {
-			Town.move(npc === NPC.Jerhyn ? "palace" : npc);
-			var monkey = getUnit(sdk.unittype.NPC, npc === NPC.Cain ? "deckard cain" : npc);
+		for (let i = 0; i < 5; i++) {
+			Town.move(npc === NPC.Jerhyn ? 'palace' : npc);
+			let monkey = getUnit(sdk.unittype.NPC, npc === NPC.Cain ? 'deckard cain' : npc);
 			if (monkey && monkey.openMenu()) {
 				return monkey;
 			}
@@ -345,7 +380,7 @@
 
 	me.moveTo = function(...args) {
 		const Pather = require('../modules/Pather');
-		Pather.moveTo.apply(Pather, args)
+		Pather.moveTo.apply(Pather, args);
 	};
 
 	me.getCube = () => {

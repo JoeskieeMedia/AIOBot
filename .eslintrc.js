@@ -101,7 +101,9 @@ module.exports = {
 		'md5': true,
 		'module': true,
 		'require': true,
-		'srequire': true,
+		'console': true,
+		'getUnits': true,
+		'getSkillById': true,
 	},
 	'rules': {
 		// enable additional rules

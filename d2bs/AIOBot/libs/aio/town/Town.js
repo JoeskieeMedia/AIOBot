@@ -1,16 +1,16 @@
 /**
  *    @filename    Town.js
- *    @author      kolton, Jaenster
- *    @desc        do town chores like buying, selling and gambling
+ *    @author      Joeskiee
+ *    @desc        do town tasks
  */
 (function (module, require) {
-	
+	const TownFunc = require("./TownFunc");
 
 	/** @class Town */
-	const Town = function Town(todo = []) {
+	const Town = function Town(todo) {
 
 		if (!me.inTown) {
-			Town.goToTown();
+			TownFunc.goToTown();
 		}
 		
 		const npcs = [];

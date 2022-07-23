@@ -6,6 +6,7 @@
 (function (module, require) {
 	const questEvents = new (require('../modules/Events'))();
 	const Worker = require('../modules/Worker');
+	const sdk = require('../modules/sdk');
 
 	const getQuests = (q, newQuest = []) => {
 		for (let y = 0; y < 12; y++) {
@@ -94,6 +95,60 @@
 	};
 
 	let states = [];
+	
+
+	let tick = getTickCount();
+	let internalCheck = -1;
+
+	function refreshQuest(q) {
+		if (!me.ingame || !me.gameReady) {
+			return;
+		} // in case we are not in game, or loading act/game
+
+		if (getTickCount() - tick > 1500) {
+			sendPacket(1, 0x40);
+			tick = getTickCount();
+		}
+		
+		// If old quest state isn't known yet. Fill it in
+		if (!states.hasOwnProperty(q)) {
+			states[q] = getQuests(q);
+			
+			questEvents.emit(q, states[q]); // First time in game, or when this is used, trigger all
+			questEvents.emit('all', {
+				q: q,
+				state: states[q],
+			});
+			return; // re-check next time
+		}
+
+		// see if there is a new quest state
+		const newQuestState = getQuests(q);
+		if (!newQuestState.isEqual(states[q])) { // There are differences
+			const changed = [];
+			newQuestState.forEach((c, i) => c !== states[q][i] && changed.push({key: i, value: c}));
+
+			states[q] = newQuestState;
+			
+			if (typeof message[q] !== 'undefined') {
+				changed.forEach(el => {
+					const key = el.key, value = el.value;
+					const msg = typeof message[q][key] === 'string' && (message[q][key] + ': ' + Boolean(value).toString()) || JSON.stringify(el);
+
+					console.debug(Object.keys(sdk.quests).filter(ele => sdk.quests[ele] === q).first(), msg);
+				});
+			} else {
+				print(q + ' => ' + JSON.stringify(changed));
+			}
+
+			questEvents.emit(q, states[q]); // Trigger
+			questEvents.emit('all', {
+				q: q,
+				state: states[q],
+			});
+		}
+
+	}
 	const Quests = {
 		on: questEvents.on,
 		off: questEvents.off,
@@ -114,57 +169,6 @@
 			}
 		}),
 	};
-
-	let tick = getTickCount();
-	let internalCheck = -1;
-
-	function refreshQuest(q) {
-		if (!me.ingame || !me.gameReady) {
-			return;
-		} // in case we are not in game, or loading act/game
-
-		if (getTickCount() - tick > 1500) {
-			sendPacket(1, 0x40);
-			tick = getTickCount();
-		}
-		// If old quest state isn't known yet. Fill it in
-		if (!states.hasOwnProperty(q)) {
-			states[q] = getQuests(q);
-			// questEvents.emit(q, states[q]); // First time in game, or when this is used, trigger all
-			// questEvents.emit('all', {
-			// 	q: q,
-			// 	state: states[q],
-			// });
-			return; // re-check next time
-		}
-
-		// see if there is a new quest state
-		const newQuestState = getQuests(q);
-		if (!newQuestState.isEqual(states[q])) { // There are differences
-			const changed = [];
-			newQuestState.forEach((c, i) => c !== states[q][i] && changed.push({key: i, value: c}));
-
-			states[q] = newQuestState;
-
-			if (typeof message[q] !== 'undefined') {
-				changed.forEach(el => {
-					const key = el.key, value = el.value;
-					const msg = typeof message[q][key] === 'string' && (message[q][key] + ': ' + Boolean(value).toString()) || JSON.stringify(el);
-
-					console.debug(Object.keys(sdk.quests).filter(el => sdk.quests[el] === q).first(), msg);
-				});
-			} else {
-				print(q + ' => ' + JSON.stringify(changed));
-			}
-
-			questEvents.emit(q, states[q]); // Trigger
-			questEvents.emit('all', {
-				q: q,
-				state: states[q],
-			});
-		}
-
-	}
 
 	Worker.runInBackground.questing = () => refreshQuest.apply(Quests, [internalCheck = (internalCheck + 1) % 44]) || true;
 

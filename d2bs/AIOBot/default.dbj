@@ -8,6 +8,7 @@ function main() {
     include('require.js');
     include('sdk.js');
     include('oog.js');
+	require('libs/modules/Guard')
 	D2Bot.init();
     OnceLoaded();
 }

@@ -8,12 +8,12 @@
 	const CollMap = {};
 	CollMap.rooms = [];
 	CollMap.maps = [];
-
+	
 	CollMap.getNearbyRooms = function (x, y) {
-		var i, room, rooms;
+		let i, room, rooms;
 
 		room = getRoom(x, y);
-
+		print(room);
 		if (!room) {
 			return false;
 		}
@@ -34,7 +34,7 @@
 	};
 
 	CollMap.addRoom = function (x, y) {
-		var room, coll;
+		let room, coll;
 
 		room = x instanceof Room ? x : getRoom(x, y);
 
@@ -58,7 +58,7 @@
 	};
 
 	CollMap.getColl = function (x, y, cacheOnly) {
-		var i, j,
+		let i, j,
 			index = CollMap.getRoomIndex(x, y, cacheOnly);
 
 		if (index === undefined) {
@@ -80,7 +80,7 @@
 			CollMap.reset();
 		}
 
-		var i;
+		let i;
 
 		for (i = 0; i < CollMap.rooms.length; i += 1) {
 			if (CollMap.coordsInRoom(x, y, CollMap.rooms[i])) {
@@ -115,11 +115,11 @@
 			thickness = 1;
 		}
 
-		var i, k, l, cx, cy, angle, distance;
+		let i, k, l, cx, cy, angle, distance;
 
 		angle = Math.atan2(unitA.y - unitB.y, unitA.x - unitB.x);
-		distance = Math.round(getDistance(unitA, unitB));
-
+		distance = Math.round(Math.sqrt( Math.pow((unitA.x - unitB.x), 2) + Math.pow((unitA.y - unitB.y), 2) ));
+		
 		for (i = 1; i < distance; i += 1) {
 			cx = Math.round((Math.cos(angle)) * i + unitB.x);
 			cy = Math.round((Math.sin(angle)) * i + unitB.y);
@@ -141,7 +141,7 @@
 		// distance is from room center, handy for keeping bot from trying to teleport on walls
 
 		if (!room) {
-			throw new Error("Invalid room passed to getTelePoint");
+			throw new Error('Invalid room passed to getTelePoint');
 		}
 
 		let roomx = room.x * 5, roomy = room.y * 5;
@@ -156,16 +156,14 @@
 						validTiles.push({
 							x: roomx + b - bMid,
 							y: roomy + a - aMid,
-							distance: getDistance(0, 0, a - aMid, b - bMid)
+							distance: Math.sqrt( Math.pow((0 - (a - aMid), 2) + Math.pow((0 - (b - bMid)), 2) ))
 						});
 					}
 				}
 			}
 
 			if (validTiles.length) {
-				validTiles.sort((a, b) => {
-					return a.distance - b.distance;
-				});
+				validTiles.sort((a, b) => a.distance - b.distance);
 
 				return validTiles[0];
 			}
@@ -178,12 +176,12 @@
 
 	CollMap.getRandCoordinate = function (cX, xmin, xmax, cY, ymin, ymax, factor = 1) {
 		// returns randomized {x, y} object with valid coordinates
-		var coordX, coordY,
+		let coordX, coordY,
 			retry = 0;
 
 		do {
 			if (retry > 30) {
-				print("failed to get valid coordinate");
+				print('failed to get valid coordinate');
 				coordX = cX;
 				coordY = cY;
 

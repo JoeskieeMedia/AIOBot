@@ -1,18 +1,14 @@
 (function(module, require) {
 	const sdk = require('../../modules/sdk');
-	const QuestEvent = require('../../modules/QuestEvents');
+	const Quest = require('../../modules/QuestEvents');
 	const Promise = require('../../modules/Promise');
 	const Pather = require('../../modules/Pather');
+	const Attack = require('../../modules/Attack');
 
 	const DenOfEvil = {
 		act: () => 1, // probably don't need this but it's here incase we do
 		areas: [sdk.areas.BloodMoor, sdk.areas.DenofEvil],
-			
-		
 		check: () => !me.getQuest(sdk.quest.id.DenofEvil, DenOfEvil.state.Completed),
-		message: () => {
-			
-		},
 		immunes: () => {
 			const normal = [];
 			const nightmare = [];
@@ -50,22 +46,21 @@
 
 		exec: () => {
 			
-			print('Den Of Evil Immunes: ' + DenOfEvil.immunes());
-			QuestEvent.on(sdk.quest.id.DenofEvil, (sub, state) => {
+			
+			Quest.on(sdk.quest.id.DenofEvil, function(sub, state) {
 
 				if (sub === DenOfEvil.state.EnteredDen && state) {
 					print('Entered Den of evil');
 
-					new Promise(resolve => me.area === DenOfEvil.questArea() && resolve())
+					new Promise(resolve => me.area === DenOfEvil.questArea[0] && resolve())
 						.then(function() { // Assuming here we are in act 1.
-							
+							print('here in promise');
 							//Town.move('warriv');
-							const npc = getUnit(1, 'warriv');
-							npc.openMenu() && npc.useMenu(sdk.menu.GoEast);
+							Attack.clearLevel();
 						});
 				}
 			});
-			QuestEvent.on(sdk.quest.id.DenofEvil, function(sub, state) {
+			Quest.on(sdk.quest.id.DenofEvil, function(sub, state) {
 				
 				
 				if (sub === DenOfEvil.state.KilledLast && state) {
@@ -86,9 +81,13 @@
 				
 				
 				if (me.area === sdk.areas.BloodMoor) {
+					print('clearLevel');
+					Attack.clearLevel();
+				}
+				if (me.area === sdk.areas.DenofEvil) {
 					
 				}
-				//Pather.moveToExit(DenOfEvil.areas[i], true);
+				Pather.moveToExit(DenOfEvil.areas[i], true);
 				
 
 			}

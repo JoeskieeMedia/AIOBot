@@ -1,8 +1,9 @@
+/**
+ * @description Simple worker class for async behavior
+ * @author Jaenster
+ */
+
 (function(module, require) {
-	/**
-     * @description Simple worker class for async behavior
-     * @author Jaenster
-     */
 	const recursiveCheck = function (stackNumber) {
 		let stack = new Error().stack.match(/[^\r\n]+/g),
 			functionName = stack[stackNumber || 1].substr(0, stack[stackNumber || 1].indexOf('@'));
@@ -63,6 +64,9 @@
 
 				let proxyCallback = function () {
 					target.processes.running = (callback() && self.pushLowPrio(proxyCallback) > -1);
+					if (!target.processes.running) {
+						delete target.processes[name];
+					}
 				};
 
 				self.pushLowPrio(proxyCallback);
@@ -81,14 +85,8 @@
 
 		// Override the delay function, to check for background work while we wait anyway
 		global.delay = function (amount) {
-			let recursive;
 
-			try {
-				recursive = recursiveCheck();
-			} catch (e) {
-				print(e.stack);
-				throw e;
-			}
+			let recursive = recursiveCheck();
 			let start = getTickCount();
 			amount = amount || 0;
 

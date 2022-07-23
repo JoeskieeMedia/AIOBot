@@ -1,10 +1,6 @@
 (function (module, require) {
-	/**
-	 * @description Promise polyfill for d2bs. Try's to re-create the entire
-	 * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
-	 * @author Jaenster
-	 */
-	const Worker = require('../modules/Worker');
+	const Worker = require('Worker');
+	
 	/**
 	 *
 	 * @param {function({resolve},{reject}):boolean} callback
@@ -12,7 +8,7 @@
 	 */
 	const Promise = module.exports = function (callback) {
 		typeof Promise.__promiseCounter === 'undefined' && (Promise.__promiseCounter = 0);
-
+		print('Promise constructor');
 		this._after = [];
 		this._catchers = [];
 		this._finally = [];
@@ -97,4 +93,3 @@
 	Promise.allSettled = (promises) => new Promise(resolve => promises.every(x => x.stopped) && resolve(promises));
 
 })(module, require);
-

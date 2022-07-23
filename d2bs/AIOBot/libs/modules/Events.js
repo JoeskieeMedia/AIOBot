@@ -1,6 +1,12 @@
+/**
+ * @author Jaenster
+ * @description A node like event system
+ *
+ */
+
 (function (module, require) {
 	const Events = module.exports = function () {
-		const Worker = require('../modules/Worker'), self = this;
+		const Worker = require('Worker'), self = this;
 
 		this.hooks = [];
 
@@ -30,11 +36,11 @@
 			if (callback === undefined && typeof name === 'function') {
 				[callback, name] = [name, callback];
 			}
-			const Hooks = new Hook(name, function (...args) {
+			const hook = new Hook(name, function (...args) {
 				callback.apply(undefined, args);
 				delete self.hooks[this.id];
 			});
-			Hooks.__callback = callback;
+			hook.__callback = callback;
 		};
 
 		this.off = function (name, callback) {
